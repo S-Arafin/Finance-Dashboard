@@ -1,0 +1,34 @@
+@import "tailwindcss";
+@plugin "daisyui/theme" {
+  name: "neon-dark";
+  default: true;
+  color-scheme: dark;
+  --color-base-100: #050511; 
+  --color-base-200: #0a0a1a;
+  --color-base-300: #111122;
+  
+  --color-primary: #39ff14;
+  --color-secondary: #00ffff;
+  --color-accent: #ff00ff;
+  --color-neutral: #1a1a2e;
+}
+
+@plugin "daisyui/theme" {
+  name: "neon-light";
+  color-scheme: light;
+  --color-base-100: #ffffff;
+  --color-base-200: #f4f4f9;
+  --color-base-300: #e2e2ea;
+  
+  --color-primary: #00bfff;
+  --color-secondary: #a200ff;
+  --color-accent: #ff0055;
+  --color-neutral: #2d3748;
+}
+
+body {
+  font-family: "Urbanist", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
