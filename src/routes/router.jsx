@@ -31,7 +31,7 @@ const router = createBrowserRouter(
                     Component: Expenses,
                 },
                 {
-                    path: '/User',
+                    path: '/user',
                     Component: User,
                 },
                 
