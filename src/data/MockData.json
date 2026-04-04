@@ -1,0 +1,359 @@
+{
+  "user": {
+    "_id": "651f1a8e9b1e8a001c8e4b2a",
+    "name": "Marcus Vance",
+    "role": "Corporate Executive & Entrepreneur",
+    "email": "m.vance@holdings.com",
+    "settings": {
+      "currency": "USD",
+      "taxRatePercentage": 24
+    }
+  },
+  "summary": {
+    "period": "Last 30 Days (Mar 04, 2026 - Apr 03, 2026)",
+    "totalGrossIncome": 42000.00,
+    "estimatedTaxOwed": 10080.00,
+    "totalNetIncome": 31920.00,
+    "totalExpenses": 6460.49,
+    "netSavings": 25459.51,
+    "investmentPortfolioValue": 285000.00
+  },
+  "income": [
+    {
+      "_id": "inc_26_04_01_a",
+      "source": "Corporate Executive Salary",
+      "category": "Employment",
+      "grossAmount": 15000.00,
+      "taxDeducted": 3600.00,
+      "netAmount": 11400.00,
+      "frequency": "Monthly",
+      "date": "2026-04-01T08:00:00Z",
+      "status": "Deposited"
+    },
+    {
+      "_id": "inc_26_04_01_b",
+      "source": "Independent Consulting Retainer",
+      "category": "Business",
+      "grossAmount": 3000.00,
+      "taxDeducted": 720.00,
+      "netAmount": 2280.00,
+      "frequency": "Monthly",
+      "date": "2026-04-01T10:15:00Z",
+      "status": "Deposited"
+    },
+    {
+      "_id": "inc_26_04_01_c",
+      "source": "Rental Property Income",
+      "category": "Real Estate",
+      "grossAmount": 2500.00,
+      "taxDeducted": 600.00,
+      "netAmount": 1900.00,
+      "frequency": "Monthly",
+      "date": "2026-04-01T14:30:00Z",
+      "status": "Deposited"
+    },
+    {
+      "_id": "inc_26_03_28",
+      "source": "Vance Tech Solutions LLC",
+      "category": "Business",
+      "grossAmount": 12000.00,
+      "taxDeducted": 2880.00,
+      "netAmount": 9120.00,
+      "frequency": "Monthly",
+      "date": "2026-03-28T10:30:00Z",
+      "status": "Deposited"
+    },
+    {
+      "_id": "inc_26_03_22",
+      "source": "Freelance System Architecture",
+      "category": "Business",
+      "grossAmount": 1500.00,
+      "taxDeducted": 360.00,
+      "netAmount": 1140.00,
+      "frequency": "One-Time",
+      "date": "2026-03-22T16:00:00Z",
+      "status": "Deposited"
+    },
+    {
+      "_id": "inc_26_03_15",
+      "source": "Downtown Real Estate Holdings",
+      "category": "Business",
+      "grossAmount": 5500.00,
+      "taxDeducted": 1320.00,
+      "netAmount": 4180.00,
+      "frequency": "Monthly",
+      "date": "2026-03-15T14:15:00Z",
+      "status": "Deposited"
+    },
+    {
+      "_id": "inc_26_03_10",
+      "source": "S&P 500 & Tech ETF Dividends",
+      "category": "Investments",
+      "grossAmount": 2500.00,
+      "taxDeducted": 600.00,
+      "netAmount": 1900.00,
+      "frequency": "Quarterly",
+      "date": "2026-03-10T09:00:00Z",
+      "status": "Deposited"
+    },
+    {
+      "_id": "inc_25_12_01",
+      "source": "Corporate Executive Salary",
+      "category": "Employment",
+      "grossAmount": 15000.00,
+      "taxDeducted": 3600.00,
+      "netAmount": 11400.00,
+      "frequency": "Monthly",
+      "date": "2025-12-01T08:00:00Z",
+      "status": "Deposited"
+    },
+    {
+      "_id": "inc_24_06_15",
+      "source": "Tech Startup Exit (Partial)",
+      "category": "Investments",
+      "grossAmount": 45000.00,
+      "taxDeducted": 10800.00,
+      "netAmount": 34200.00,
+      "frequency": "One-Time",
+      "date": "2024-06-15T11:00:00Z",
+      "status": "Deposited"
+    }
+  ],
+  "expenses": [
+    {
+      "_id": "exp_26_04_02_a",
+      "merchant": "Whole Foods Market",
+      "category": "Grocery",
+      "amount": 450.00,
+      "date": "2026-04-02T16:45:00Z",
+      "paymentMethod": "Credit Card ending in 4092"
+    },
+    {
+      "_id": "exp_26_04_02_b",
+      "merchant": "Shell Gas Station",
+      "category": "Transportation Fee",
+      "amount": 65.00,
+      "date": "2026-04-02T08:15:00Z",
+      "paymentMethod": "Debit Card"
+    },
+    {
+      "_id": "exp_26_04_02_c",
+      "merchant": "Starbucks Reserve",
+      "category": "Food",
+      "amount": 12.50,
+      "date": "2026-04-02T09:30:00Z",
+      "paymentMethod": "Corporate Card"
+    },
+    {
+      "_id": "exp_26_04_02_d",
+      "merchant": "Amazon Web Services",
+      "category": "Other Fee",
+      "amount": 145.00,
+      "date": "2026-04-02T11:00:00Z",
+      "paymentMethod": "Business Account"
+    },
+    {
+      "_id": "exp_26_04_02_e",
+      "merchant": "Netflix Subscription",
+      "category": "Entertainment",
+      "amount": 22.99,
+      "date": "2026-04-02T14:00:00Z",
+      "paymentMethod": "Credit Card ending in 4092"
+    },
+    {
+      "_id": "exp_26_03_28",
+      "merchant": "Equinox Fitness",
+      "category": "Health & Fitness",
+      "amount": 150.00,
+      "date": "2026-03-28T07:00:00Z",
+      "paymentMethod": "Debit Card"
+    },
+    {
+      "_id": "exp_26_03_25",
+      "merchant": "City General Hospital",
+      "category": "Medical Fees",
+      "amount": 1200.00,
+      "date": "2026-03-25T11:20:00Z",
+      "paymentMethod": "Health Savings Account"
+    },
+    {
+      "_id": "exp_26_03_20",
+      "merchant": "Tesla Supercharger & Tolls",
+      "category": "Transportation Fee",
+      "amount": 140.00,
+      "date": "2026-03-20T08:15:00Z",
+      "paymentMethod": "Debit Card"
+    },
+    {
+      "_id": "exp_26_03_18_a",
+      "merchant": "City Power & Light",
+      "category": "Utilities",
+      "amount": 210.00,
+      "date": "2026-03-18T10:00:00Z",
+      "paymentMethod": "Business Account"
+    },
+    {
+      "_id": "exp_26_03_18_b",
+      "merchant": "Municipal Water Utility",
+      "category": "Utilities",
+      "amount": 65.00,
+      "date": "2026-03-18T10:05:00Z",
+      "paymentMethod": "Business Account"
+    },
+    {
+      "_id": "exp_26_03_14",
+      "merchant": "Nobu - Client Dinner",
+      "category": "Food",
+      "amount": 340.00,
+      "date": "2026-03-14T20:30:00Z",
+      "paymentMethod": "Corporate Card"
+    },
+    {
+      "_id": "exp_26_03_12",
+      "merchant": "Capital Grille",
+      "category": "Food",
+      "amount": 320.00,
+      "date": "2026-03-12T20:00:00Z",
+      "paymentMethod": "Corporate Card"
+    },
+    {
+      "_id": "exp_26_03_05",
+      "merchant": "Walgreens Pharmacy",
+      "category": "Medicine",
+      "amount": 85.00,
+      "date": "2026-03-05T12:30:00Z",
+      "paymentMethod": "Credit Card ending in 4092"
+    },
+    {
+      "_id": "exp_25_11_10",
+      "merchant": "Delta Airlines Business Class",
+      "category": "Transportation Fee",
+      "amount": 1850.00,
+      "date": "2025-11-10T08:00:00Z",
+      "paymentMethod": "Corporate Card"
+    },
+    {
+      "_id": "exp_25_08_22",
+      "merchant": "CVS Pharmacy",
+      "category": "Medicine",
+      "amount": 125.00,
+      "date": "2025-08-22T14:30:00Z",
+      "paymentMethod": "Credit Card ending in 4092"
+    },
+    {
+      "_id": "exp_25_03_05",
+      "merchant": "LegalZoom Corporate Structuring",
+      "category": "Other Fee",
+      "amount": 2500.00,
+      "date": "2025-03-05T09:15:00Z",
+      "paymentMethod": "Business Account"
+    },
+    {
+      "_id": "exp_24_12_18",
+      "merchant": "Local Bistro Client Dinner",
+      "category": "Food",
+      "amount": 420.00,
+      "date": "2024-12-18T20:00:00Z",
+      "paymentMethod": "Corporate Card"
+    },
+    {
+      "_id": "exp_24_07_12",
+      "merchant": "Uber Black",
+      "category": "Transportation Fee",
+      "amount": 85.00,
+      "date": "2024-07-12T18:10:00Z",
+      "paymentMethod": "Debit Card"
+    },
+    {
+      "_id": "exp_24_02_28",
+      "merchant": "Trader Joe's",
+      "category": "Grocery",
+      "amount": 210.00,
+      "date": "2024-02-28T17:45:00Z",
+      "paymentMethod": "Credit Card ending in 4092"
+    },
+    {
+      "_id": "exp_23_10_14",
+      "merchant": "AWS Cloud Hosting & Software Services",
+      "category": "Other Fee",
+      "amount": 455.00,
+      "date": "2023-10-14T01:00:00Z",
+      "paymentMethod": "Business Account"
+    },
+    {
+      "_id": "exp_23_06_05",
+      "merchant": "Dr. Smith Dental Specialist",
+      "category": "Medical Fees",
+      "amount": 1350.00,
+      "date": "2023-06-05T10:00:00Z",
+      "paymentMethod": "Health Savings Account"
+    },
+    {
+      "_id": "exp_22_05_11",
+      "merchant": "Kroger Supermarket",
+      "category": "Grocery",
+      "amount": 380.00,
+      "date": "2022-05-11T16:10:00Z",
+      "paymentMethod": "Credit Card ending in 4092"
+    },
+    {
+      "_id": "exp_21_11_20",
+      "merchant": "Ruth's Chris Steak House",
+      "category": "Food",
+      "amount": 250.00,
+      "date": "2021-11-20T19:45:00Z",
+      "paymentMethod": "Corporate Card"
+    },
+    {
+      "_id": "exp_21_08_05",
+      "merchant": "Porsche Dealership Maintenance",
+      "category": "Transportation Fee",
+      "amount": 1850.00,
+      "date": "2021-08-05T08:30:00Z",
+      "paymentMethod": "Debit Card"
+    },
+    {
+      "_id": "exp_21_02_15",
+      "merchant": "State Business License Registration",
+      "category": "Other Fee",
+      "amount": 500.00,
+      "date": "2021-02-15T11:00:00Z",
+      "paymentMethod": "Business Account"
+    }
+  ],
+  "statements": [
+    {
+      "_id": "stmt_26_03",
+      "month": "March",
+      "year": 2026,
+      "openingBalance": 125000.00,
+      "closingBalance": 146150.00,
+      "totalIncome": 35000.00,
+      "totalExpenses": 5450.00,
+      "taxReserved": 8400.00,
+      "status": "Reconciled"
+    },
+    {
+      "_id": "stmt_26_02",
+      "month": "February",
+      "year": 2026,
+      "openingBalance": 110500.00,
+      "closingBalance": 125000.00,
+      "totalIncome": 28000.00,
+      "totalExpenses": 6780.00,
+      "taxReserved": 6720.00,
+      "status": "Reconciled"
+    },
+    {
+      "_id": "stmt_25_12",
+      "month": "December",
+      "year": 2025,
+      "openingBalance": 85000.00,
+      "closingBalance": 102000.00,
+      "totalIncome": 42000.00,
+      "totalExpenses": 14920.00,
+      "taxReserved": 10080.00,
+      "status": "Reconciled"
+    }
+  ]
+}
