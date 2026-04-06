@@ -3,6 +3,7 @@ import { useData } from "../Context/DataContext";
 import { useAuth } from "../Context/AuthContext";
 import YearlyBarChartWidget from "../Components/YearlyBarChartWidget";
 import RevenuePieChartWidget from "../Components/RevenuePieChartWidget";
+import EditTransactionModal from '../Components/EditTransactionModal';
 
 const Income = () => {
   const { appData, setAppData } = useData();
@@ -15,6 +16,9 @@ const Income = () => {
     amount: "",
     date: new Date().toISOString().split("T")[0],
   });
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editForm, setEditForm] = useState(null);
 
   const { yearlyData, pieData, recentIncome, monthlyTotal, topCategory } =
     useMemo(() => {
@@ -97,6 +101,33 @@ const Income = () => {
     setIsAddModalOpen(false);
   };
 
+  const handleDelete = (id) => {
+    if (!window.confirm("Are you sure you want to delete this income record?")) return;
+    const newIncome = appData.income.filter(item => item._id !== id);
+    setAppData({ ...appData, income: newIncome });
+  };
+
+  const openEditModal = (transaction) => {
+    setEditForm({
+      ...transaction,
+      description: transaction.source,
+      amount: transaction.netAmount,
+      type: 'Income'
+    });
+    setIsEditModalOpen(true);
+  };
+
+  const handleSaveEdit = (updatedTransaction) => {
+    const updatedIncome = appData.income.map(item => 
+      item._id === updatedTransaction._id 
+        ? { ...item, source: updatedTransaction.description, netAmount: parseFloat(updatedTransaction.amount) } 
+        : item
+    );
+    setAppData({ ...appData, income: updatedIncome });
+    setIsEditModalOpen(false);
+    setEditForm(null); 
+  };
+
   return (
     <div className="p-4 md:p-8 w-full max-w-7xl mx-auto space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-2">
@@ -159,38 +190,56 @@ const Income = () => {
           <table className="table w-full text-neutral">
             <thead>
               <tr className="text-neutral opacity-70 border-b border-base-300">
-                <th>Date</th>
-                <th>Source</th>
-                <th>Category</th>
-                <th className="text-right">Net Amount</th>
+                <th className="whitespace-nowrap">Date</th>
+                <th className="whitespace-nowrap">Source</th>
+                <th className="whitespace-nowrap">Category</th>
+                <th className="text-right whitespace-nowrap">Net Amount</th>
+                {auth.role === 'admin' && <th className="text-right whitespace-nowrap">Actions</th>}
               </tr>
             </thead>
             <tbody>
               {recentIncome.map((inc) => (
                 <tr key={inc._id} className="hover border-b border-base-300/50">
-                  <td className="whitespace-nowrap">
+                  <td className="whitespace-nowrap text-sm">
                     {new Date(inc.date).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
                       year: "numeric",
                     })}
                   </td>
-                  <td className="font-medium">{inc.source}</td>
-                  <td>
+                  <td className="font-medium min-w-[150px]">{inc.source}</td>
+                  <td className="whitespace-nowrap">
                     <span className="badge badge-sm bg-transparent border border-neutral text-neutral opacity-80">
                       {inc.category}
                     </span>
                   </td>
 
-                  <td className="text-right font-bold text-primary">
+                  <td className="text-right font-bold text-primary whitespace-nowrap">
                     +${inc.netAmount.toLocaleString()}
                   </td>
+
+                  {auth.role === 'admin' && (
+                    <td className="text-right whitespace-nowrap">
+                      <div className="flex items-center justify-end gap-2">
+                        <button onClick={() => openEditModal(inc)} className="btn btn-xs btn-outline btn-info">Edit</button>
+                        <button onClick={() => handleDelete(inc._id)} className="btn btn-xs btn-outline btn-error">Del</button>
+                      </div>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
+
+      {isEditModalOpen && editForm && (
+        <EditTransactionModal 
+          transaction={editForm} 
+          onClose={() => setIsEditModalOpen(false)} 
+          onSave={handleSaveEdit} 
+        />
+      )}
 
       {auth.role === "admin" && isAddModalOpen && (
         <dialog open className="modal bg-black/60 backdrop-blur-sm">
