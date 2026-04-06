@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useData } from '../Context/DataContext';
 import { useAuth } from '../Context/AuthContext';
 import EditTransactionModal from '../Components/EditTransactionModal'; 
@@ -8,6 +8,8 @@ const Statement = () => {
   const { auth } = useAuth();
   
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterType, setFilterType] = useState('All');
   const itemsPerPage = 8;
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -39,15 +41,39 @@ const Statement = () => {
     );
   }, [appData.income, appData.expenses]);
 
-  const totalPages = Math.ceil(allTransactions.length / itemsPerPage);
+  const filteredTransactions = useMemo(() => {
+    let result = allTransactions;
+
+    if (filterType !== 'All') {
+      result = result.filter(tx => tx.type === filterType);
+    }
+
+    if (searchTerm) {
+      const lowerCaseTerm = searchTerm.toLowerCase();
+      result = result.filter(tx => 
+        tx.description.toLowerCase().includes(lowerCaseTerm) ||
+        tx.category.toLowerCase().includes(lowerCaseTerm) ||
+        tx.type.toLowerCase().includes(lowerCaseTerm) ||
+        (tx.details && tx.details.toLowerCase().includes(lowerCaseTerm)) ||
+        tx.amount.toString().includes(lowerCaseTerm)
+      );
+    }
+
+    return result;
+  }, [allTransactions, searchTerm, filterType]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, filterType]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredTransactions.length / itemsPerPage));
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = allTransactions.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredTransactions.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleNextPage = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
   const handlePrevPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
 
-  
   const handleDelete = (id, type) => {
     if (!window.confirm("Are you sure you want to delete this transaction?")) return;
 
@@ -89,14 +115,40 @@ const Statement = () => {
   return (
     <div className="p-4 md:p-8 w-full max-w-7xl mx-auto space-y-6">
       
-      <div className="flex justify-between items-end mb-6">
-        <div>
-          <h1 className="text-3xl font-bold text-neutral">Full Statement</h1>
-          <p className="text-neutral opacity-70">Complete transaction history</p>
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-4 mb-6">
+        <div className="w-full lg:w-auto">
+          <h1 className="text-3xl font-bold text-neutral mb-1">Full Statement</h1>
+          <p className="text-neutral opacity-70 mb-4 lg:mb-0">Complete transaction history</p>
         </div>
-        {auth.role === 'admin' && (
-          <span className="badge badge-error badge-outline font-bold">Admin Controls Active</span>
-        )}
+        
+        <div className="flex flex-col sm:flex-row items-end sm:items-center gap-3 w-full lg:w-auto">
+          {auth.role === 'admin' && (
+            <span className="badge badge-error badge-outline font-bold hidden xl:flex">Admin Controls Active</span>
+          )}
+          
+          <select 
+            value={filterType}
+            onChange={(e) => setFilterType(e.target.value)}
+            className="select select-bordered w-full sm:w-40 bg-base-100 text-neutral border-base-300 focus:border-primary transition-colors"
+          >
+            <option value="All">All Types</option>
+            <option value="Income">Income Only</option>
+            <option value="Expense">Expense Only</option>
+          </select>
+
+          <div className="relative w-full sm:w-80">
+            <svg xmlns="http://www.w3.org/2000/svg" className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input 
+              type="text" 
+              placeholder="Search amount, merchant, method..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="input input-bordered w-full pl-10 bg-base-100 text-neutral border-base-300 focus:border-primary transition-colors"
+            />
+          </div>
+        </div>
       </div>
 
       <div className="bg-base-200 rounded-2xl shadow-lg border border-base-300 overflow-hidden">
@@ -113,41 +165,52 @@ const Statement = () => {
               </tr>
             </thead>
             <tbody>
-              {currentItems.map((tx) => (
-                <tr key={tx._id} className="hover text-neutral">
-                  <td className="whitespace-nowrap text-sm">{new Date(tx.date).toLocaleDateString()}</td>
-                  <td>
-                    <span className={`badge badge-sm bg-transparent border ${tx.type === 'Income' ? 'border-primary text-primary' : 'border-neutral text-neutral opacity-80'}`}>
-                      {tx.type}
-                    </span>
-                  </td>
-                  <td className="font-medium">{tx.description}</td>
-                  <td className="text-sm opacity-70">{tx.category}</td>
-                  <td className={`font-bold ${tx.type === 'Income' ? 'text-primary' : 'text-neutral'}`}>
-                    {tx.type === 'Income' ? '+' : '-'}${tx.amount.toLocaleString()}
-                  </td>
-                  
-                  {auth.role === 'admin' && (
-                    <td className="text-right space-x-2">
-                      <button onClick={() => openEditModal(tx)} className="btn btn-xs btn-outline btn-info">Edit</button>
-                      <button onClick={() => handleDelete(tx._id, tx.type)} className="btn btn-xs btn-outline btn-error">Del</button>
+              {currentItems.length > 0 ? (
+                currentItems.map((tx) => (
+                  <tr key={tx._id} className="hover text-neutral border-b border-base-300/50">
+                    <td className="whitespace-nowrap text-sm">{new Date(tx.date).toLocaleDateString()}</td>
+                    <td>
+                      <span className={`badge badge-sm bg-transparent border ${tx.type === 'Income' ? 'border-primary text-primary' : 'border-neutral text-neutral opacity-80'}`}>
+                        {tx.type}
+                      </span>
                     </td>
-                  )}
+                    <td className="font-medium">
+                      {tx.description}
+                      <br/>
+                      <span className="text-xs opacity-60 font-normal">{tx.details}</span>
+                    </td>
+                    <td className="text-sm opacity-70">{tx.category}</td>
+                    <td className={`font-bold ${tx.type === 'Income' ? 'text-primary' : 'text-neutral'}`}>
+                      {tx.type === 'Income' ? '+' : '-'}${tx.amount.toLocaleString()}
+                    </td>
+                    
+                    {auth.role === 'admin' && (
+                      <td className="text-right space-x-2">
+                        <button onClick={() => openEditModal(tx)} className="btn btn-xs btn-outline btn-info">Edit</button>
+                        <button onClick={() => handleDelete(tx._id, tx.type)} className="btn btn-xs btn-outline btn-error">Del</button>
+                      </td>
+                    )}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={auth.role === 'admin' ? 6 : 5} className="text-center py-12">
+                    <p className="text-neutral opacity-60 text-lg">No transactions found matching your filters</p>
+                  </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
 
         <div className="flex items-center justify-between p-4 border-t border-base-300 bg-base-100">
-         
           <span className="text-sm text-neutral">
-            Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, allTransactions.length)} of {allTransactions.length} entries
+            Showing {filteredTransactions.length === 0 ? 0 : indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredTransactions.length)} of {filteredTransactions.length} entries
           </span>
           <div className="join">
-            <button onClick={handlePrevPage} disabled={currentPage === 1} className="join-item btn btn-sm border-base-300 text-neutral">«</button>
-            <button className="join-item btn btn-sm no-animation border-base-300 text-neutral">Page {currentPage}</button>
-            <button onClick={handleNextPage} disabled={currentPage === totalPages} className="join-item btn btn-sm border-base-300 text-neutral">»</button>
+            <button onClick={handlePrevPage} disabled={currentPage === 1} className="join-item btn btn-sm border-base-300 text-neutral bg-base-200 hover:bg-base-300">«</button>
+            <button className="join-item btn btn-sm no-animation border-base-300 text-neutral bg-base-100">Page {currentPage} of {totalPages}</button>
+            <button onClick={handleNextPage} disabled={currentPage === totalPages} className="join-item btn btn-sm border-base-300 text-neutral bg-base-200 hover:bg-base-300">»</button>
           </div>
         </div>
       </div>
