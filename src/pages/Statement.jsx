@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router'; 
 import { useData } from '../Context/DataContext';
 import { useAuth } from '../Context/AuthContext';
 import EditTransactionModal from '../Components/EditTransactionModal'; 
@@ -7,10 +8,21 @@ const Statement = () => {
   const { appData, setAppData } = useData();
   const { auth } = useAuth();
   
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchTerm = searchParams.get('search') || '';
+
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('All');
   const itemsPerPage = 8;
+
+  const [prevSearch, setPrevSearch] = useState(searchTerm);
+  const [prevFilter, setPrevFilter] = useState(filterType);
+
+  if (searchTerm !== prevSearch || filterType !== prevFilter) {
+    setPrevSearch(searchTerm);
+    setPrevFilter(filterType);
+    setCurrentPage(1);
+  }
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editForm, setEditForm] = useState(null);
@@ -62,10 +74,6 @@ const Statement = () => {
     return result;
   }, [allTransactions, searchTerm, filterType]);
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm, filterType]);
-
   const totalPages = Math.max(1, Math.ceil(filteredTransactions.length / itemsPerPage));
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -112,6 +120,42 @@ const Statement = () => {
     setEditForm(null); 
   };
 
+  const handleStatementSearch = (e) => {
+    const val = e.target.value;
+    if (val) {
+      setSearchParams({ search: val });
+    } else {
+      setSearchParams({});
+    }
+  };
+
+  const handleExportCSV = () => {
+    const headers = ['Date', 'Type', 'Description', 'Category', 'Amount', 'Details'];
+    
+    const csvRows = filteredTransactions.map(tx => {
+      return [
+        new Date(tx.date).toLocaleDateString(),
+        tx.type,
+        `"${tx.description.replace(/"/g, '""')}"`,
+        tx.category,
+        tx.amount,
+        `"${(tx.details || '').replace(/"/g, '""')}"`
+      ].join(',');
+    });
+
+    const csvContent = [headers.join(','), ...csvRows].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', `financial_statement_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="p-4 md:p-8 w-full max-w-7xl mx-auto space-y-6">
       
@@ -122,6 +166,18 @@ const Statement = () => {
         </div>
         
         <div className="flex flex-col sm:flex-row items-end sm:items-center gap-3 w-full lg:w-auto">
+          
+          <button 
+            onClick={handleExportCSV}
+            className="btn btn-outline border-base-300 text-neutral hover:bg-base-300 hover:border-base-300 transition-colors hidden sm:flex items-center gap-2"
+            title="Download CSV"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Export
+          </button>
+
           {auth.role === 'admin' && (
             <span className="badge badge-error badge-outline font-bold hidden xl:flex">Admin Controls Active</span>
           )}
@@ -144,7 +200,7 @@ const Statement = () => {
               type="text" 
               placeholder="Search amount, merchant, method..." 
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={handleStatementSearch}
               className="input input-bordered w-full pl-10 bg-base-100 text-neutral border-base-300 focus:border-primary transition-colors"
             />
           </div>

@@ -8,6 +8,7 @@ import Expenses from "../pages/Expenses";
 import User from "../pages/User";
 import Login from "../pages/Login";
 
+
 const router = createBrowserRouter([
   {
     path: "/login",
@@ -38,7 +39,15 @@ const router = createBrowserRouter([
         path: "/user",
         Component: User,
       },
+      {
+        path: "*",
+        Component: ErrorPage,
+      },
     ],
+  },
+  {
+    path: "*",
+    Component: ErrorPage,
   },
 ]);
 
