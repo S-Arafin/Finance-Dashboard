@@ -61,7 +61,7 @@ const Login = () => {
               type="text" 
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-base-100 border border-base-300 text-base-content focus:outline-none focus:border-primary transition-colors"
+              className="w-full px-4 py-3 rounded-xl bg-base-100 border border-base-300 text-accent focus:outline-none focus:border-primary transition-colors"
               placeholder="admin or user"
               required
             />
@@ -73,7 +73,7 @@ const Login = () => {
               type="password" 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-base-100 border border-base-300 text-base-content focus:outline-none focus:border-primary transition-colors"
+              className="w-full px-4 py-3 rounded-xl bg-base-100 border border-base-300 text-accent focus:outline-none focus:border-primary transition-colors"
               placeholder="••••••••"
               required
             />

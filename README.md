@@ -65,6 +65,23 @@ yarn dev
 Open your browser:
 Navigate to http://localhost:5173 (or the port specified in your terminal).
 
+🔑 Demo Credentials
+To evaluate the Role-Based Access Control (RBAC) features, please use the following mock credentials on the Login screen:
+
+Admin Access (Full CRUD Permissions):
+
+Email: admin
+
+Password: admin
+
+User Access (Read-Only Viewer):
+
+Email: user
+
+Password: user
+
+(Note: Once logged in, you can also seamlessly toggle between roles directly from the User Profile page without needing to log out!)
+
 💡 Design & UX Decisions
 Empty States: The application handles empty data sets gracefully. If a search yields no results, a clean, formatted "Not Found" UI is presented rather than an empty table or broken layout.
 
